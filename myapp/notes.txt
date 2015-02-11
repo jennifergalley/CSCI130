@@ -1,0 +1,4 @@
+notes
+
+To Start Server:
+C:/go_appengine/goapp serve
