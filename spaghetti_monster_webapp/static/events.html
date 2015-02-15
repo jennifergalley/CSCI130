@@ -1,0 +1,18 @@
+{{ define "content" }}
+	<div class="row">
+		<!-- Loops over a slice, runs once per item -->
+		{{ range . }}
+		<div class="col-xs-12 col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{ .Title }}</div>
+				<div class="panel-body">
+					Date & Time: {{ .Datetime }}
+					<br />
+					Details: {{ .Details }}
+				</div>
+			</div>
+		</div>
+		{{ end }}
+		<!-- End of loop -->
+	</div>
+{{ end }}
