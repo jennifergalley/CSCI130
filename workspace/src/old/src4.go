@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main () {
-
+ 
 	//for loop
 	for i := 0; i < 10; i++ {
 		fmt.Println(i)
@@ -57,5 +57,22 @@ func main () {
 		fmt.Println ("Key: ", key, " Value: ", val)
 	}
 
+	mySliceSliced := mySlice[0:1]
+	fmt.Println (mySliceSliced)
 
+	string := "This is a string"
+	fmt.Println(string[:6])
+	for i, val := range string[:5] {
+		fmt.Println (i, " - ", val)
+	}
+
+
+	mySlice1 := []int {0, 1, 2, 3, 4, 5}
+	mySlice2 := []int {6, 7, 8, 9, 10}
+	// mySlice3 := append(mySlice1[:3], mySlice2[3:]...)
+	mySlice3 := append(mySlice1, mySlice2...)
+	// mySlice3 := append(mySlice1[:3])
+	fmt.Print(mySlice3)
+
+	
 }
