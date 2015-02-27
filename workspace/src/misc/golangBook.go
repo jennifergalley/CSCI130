@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	// "math"
+	"math"
 	"time"
 )
 
@@ -102,7 +102,7 @@ func swap (x *int, y *int) {
 	*x = temp
 }
 
-/*type Circle struct {
+type Circle struct {
 	x, y, r float64
 }
 
@@ -129,7 +129,7 @@ func (r *Rectangle) perimeter () float64 {
 
 type Shape interface {
 	perimeter() float64
-}*/
+}
 
 func sleep (n int) {
 	for i := 0; i < n; i++ {
