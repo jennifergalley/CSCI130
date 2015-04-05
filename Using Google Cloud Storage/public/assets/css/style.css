@@ -1,0 +1,132 @@
+body {
+	/*background-color: #CCCCCC;*/
+}
+
+a#back {
+	text-decoration: none;
+	color: #664C80;
+	font-family: Georgia, sans-serif;
+	font-size: 1.2em;
+}
+
+a#back:hover {
+	color: #800000;
+}
+
+.elem-center {
+	margin: auto;
+	width: 300px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.element {
+	border: 1px solid black;
+	background-color: #99CCFF;
+}
+
+.flex-column {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
+.flex-row {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-justify-content: left;
+        -ms-flex-pack: left;
+            justify-content: left;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+}
+
+footer {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+
+footer div {
+    text-align: center;
+    line-height: 1.375em;
+}
+
+footer div a {
+    text-decoration: none;
+}
+
+footer div a:hover {
+    text-decoration: underline;
+    color: #00f;
+}
+
+
+header h1 {
+    height: 2em;
+    text-align: center;
+    padding-bottom: 0;
+    text-decoration: none;
+}
+
+header {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    height: 5em;
+}
+
+.large-padding {
+	padding: 2.5em;
+}
+
+.small-padding {
+	padding: 1em;
+}
+
+#edit {
+	background-color: #00FF00;
+}
+
+#delete {
+	background-color: #FF1919;
+}
+
+.submit {
+    margin: 0;
+    margin-right: 0.5em;
+    padding: 0.3em;
+    border: 1px solid grey;
+    border-radius: 0.3em;
+    font-size: 1em;
+    font: inherit;
+    font-family: Georgia, sans-serif;
+    vertical-align: baseline;
+}
+
+#edit:hover, #delete:hover {
+	background-color: #E6E6E6;
+	cursor: pointer;
+}

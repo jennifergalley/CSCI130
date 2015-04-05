@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Go Guestbook</title>
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+  </head>
+  <body>
+    <header class="element">
+      <h1>Twitter</h1>
+    </header>
+
+    <div class="flex-column element">
+      <div class="elem-center">
+        <a id="back" href="/write.html" class="small-padding">Write Post</a>
+        {{range .}}
+          {{with .G.Author}}
+            <p><b>{{.}}</b> wrote:</p>
+          {{else}}
+            <p>An anonymous person wrote:</p>
+          {{end}}
+          <pre>{{.G.Content}}</pre>
+          <div class="flex-row">
+            <form action="/edit" method="post">
+              <input type="hidden" name="key" value="{{.K}}">
+              <input type="hidden" name="content" value="{{.G.Content}}">
+              <input id="edit" class="submit" type="submit" value="Edit">
+            </form>
+            <form action="/delete" method="post">
+              <input type="hidden" name="key" value="{{.K}}">
+              <input id="delete" class="submit" type="submit" value="Delete">
+            </form>
+          </div>
+        {{end}}
+      </div>
+    </div>
+
+    <footer>
+      <a href="/admin.html">Admin</a>
+      <a href="/profile.html">Profile</a>
+      <a href="">Github</a>
+    </footer>
+  </body>
+</html>
