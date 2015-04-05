@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Twitter</title>
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+  </head>
+  <body>
+    <header class="element">
+      <h1>Twitter</h1>
+    </header>
+
+    <div class="flex-column element">
+      <div class="elem-center">
+        <div class="flex-row">
+          <h2>View Posts</h2>
+        </div>
+        <div class="flex-row">
+          <a href="/mine" class="small-padding text-center">My Posts</a>
+        </div>
+        {{range .}}
+          {{with .G.Author}}
+            <p><b>{{.}}</b> wrote:</p>
+          {{else}}
+            <p>An anonymous person wrote:</p>
+          {{end}}
+          <div class="post">{{.G.Content}}</div>
+        {{end}}
+      </div>
+    </div>
+
+    <footer>
+      <div class="flex-row">
+        <a href="/admin.html">Admin</a>
+        <a href="/profile.html">Profile</a>
+        <a href="https://github.com/jennifergarner/CSCI130/tree/master/Using%20Google%20Cloud%20Storage">Github</a>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,15 +1,11 @@
-body {
-	/*background-color: #CCCCCC;*/
-}
-
-a#back {
+a {
 	text-decoration: none;
 	color: #664C80;
 	font-family: Georgia, sans-serif;
 	font-size: 1.2em;
 }
 
-a#back:hover {
+a:hover {
 	color: #800000;
 }
 
@@ -25,6 +21,7 @@ a#back:hover {
 .element {
 	border: 1px solid black;
 	background-color: #99CCFF;
+    padding: 2em;
 }
 
 .flex-column {
@@ -43,9 +40,9 @@ a#back:hover {
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
-    -webkit-justify-content: left;
-        -ms-flex-pack: left;
-            justify-content: left;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     -webkit-flex-wrap: wrap;
         -ms-flex-wrap: wrap;
             flex-wrap: wrap;
@@ -66,14 +63,8 @@ footer div {
 }
 
 footer div a {
-    text-decoration: none;
+    margin: 1em;
 }
-
-footer div a:hover {
-    text-decoration: underline;
-    color: #00f;
-}
-
 
 header h1 {
     height: 2em;
@@ -129,4 +120,12 @@ header {
 #edit:hover, #delete:hover {
 	background-color: #E6E6E6;
 	cursor: pointer;
+}
+
+.post {
+    padding: 1em;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 0.3em;
+    margin: 1em;
 }

@@ -6,7 +6,7 @@ import (
     "time"
     "strconv"
     "strings"
-
+    // "fmt"
     "appengine"
     "appengine/datastore"
     "appengine/user"
@@ -29,9 +29,9 @@ type Greeting struct {
 Global Variables
 **************************
 */
-var guestbookTemplate = template.Must(template.ParseFiles("twitter.html"))
+var viewTemplate = template.Must(template.ParseFiles("view.html"))
 var editTemplate = template.Must(template.ParseFiles("edit.html"))
-
+var mineTemplate = template.Must(template.ParseFiles("myPosts.html"))
 
 
 /*
@@ -52,6 +52,8 @@ func redir(w http.ResponseWriter, r *http.Request) {
         submitEdit(w,r)
     }else if(strings.HasPrefix(r.URL.Path, "/delete")){
         delete(w,r)
+    }else if (strings.HasPrefix(r.URL.Path, "/mine")) {
+        mine(w,r)
     }else if(r.URL.Path == "/"){
         view(w, r)
     }else {
@@ -119,7 +121,7 @@ func sign(w http.ResponseWriter, r *http.Request) {
             return
     }
 
-    http.Redirect(w, r, "/", http.StatusFound)
+    http.Redirect(w, r, "/mine", http.StatusFound)
 }
 
 // Fetch and display Datastore objects
@@ -146,7 +148,42 @@ func view(w http.ResponseWriter, r *http.Request) {
     }
     // fmt.Fprint(w, entries)
 
-    if err := guestbookTemplate.Execute(w, entries); err != nil {
+    if err := viewTemplate.Execute(w, entries); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+}
+
+// Fetch and display Datastore objects
+func mine(w http.ResponseWriter, r *http.Request) {
+    c := appengine.NewContext(r)
+
+    requireUserLogin(w, r)
+
+    var loggedIn = ""
+    if u := user.Current(c); u != nil {
+        loggedIn = u.String()
+    }
+    // fmt.Fprint(w, loggedIn)
+
+    // Query for and display previous entries
+    q := datastore.NewQuery("Greeting").Filter("Author =", loggedIn)
+    greetings := make([]Greeting, 0, 10)
+    keys, err := q.GetAll(c, &greetings)
+
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    entries := make([]Entry, len(keys))
+    for i := 0; i < len(keys); i++ {
+        if (greetings[i].Author == loggedIn){
+            entries[i] = Entry{G: greetings[i], K: keys[i].IntID()}
+        }
+    }
+    // fmt.Fprint(w, entries)
+
+    if err := mineTemplate.Execute(w, entries); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
     }
 }
@@ -191,7 +228,7 @@ func submitEdit(w http.ResponseWriter, r *http.Request) {
             return
     }
 
-    http.Redirect(w, r, "/", http.StatusFound)
+    http.Redirect(w, r, "/mine", http.StatusFound)
 }
 
 func delete (w http.ResponseWriter, r *http.Request) {
@@ -201,5 +238,5 @@ func delete (w http.ResponseWriter, r *http.Request) {
     if err := datastore.Delete(c, key); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
     }
-    http.Redirect(w, r, "/", http.StatusFound)
+    http.Redirect(w, r, "/mine", http.StatusFound)
 }
