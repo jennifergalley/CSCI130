@@ -68,23 +68,6 @@ Useful Functions
 **************************
 */
 
-func requireUserLogin (w http.ResponseWriter, r *http.Request) {
-    c := appengine.NewContext(r)
-
-    // Require user login
-    u := user.Current(c)
-    if u == nil {
-        url, err := user.LoginURL(c, r.URL.String())
-        if err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-        w.Header().Set("Location", url)
-        w.WriteHeader(http.StatusFound)
-        return
-    }
-}
-
 func guestbookKey(c appengine.Context) *datastore.Key {
     return datastore.NewKey(c, "Guestbook", "default_guestbook", 0, nil)
 }
@@ -128,8 +111,6 @@ func sign(w http.ResponseWriter, r *http.Request) {
 func view(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
 
-    requireUserLogin(w, r)
-
     // Query for and display previous entries
     q := datastore.NewQuery("Greeting").Ancestor(guestbookKey(c)).Order("-Date").Limit(10)
     greetings := make([]Greeting, 0, 10)
@@ -156,8 +137,6 @@ func view(w http.ResponseWriter, r *http.Request) {
 // Fetch and display Datastore objects
 func mine(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
-
-    requireUserLogin(w, r)
 
     var loggedIn = ""
     if u := user.Current(c); u != nil {
@@ -190,8 +169,6 @@ func mine(w http.ResponseWriter, r *http.Request) {
 
 // We want to edit an entry - take us to the edit form
 func edit(w http.ResponseWriter, r *http.Request) {
-    requireUserLogin(w, r)
-
     k, _ := strconv.Atoi(r.FormValue("key"))
 
     g := Greeting{
