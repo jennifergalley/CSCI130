@@ -1,0 +1,85 @@
+
+
+/*
+  ========================================
+  Grid
+  ========================================
+*/
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+/*
+=================
+HEADER
+=================
+*/
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 8em;
+    margin-bottom: 1em;
+}
+
+
+h1 {
+    color: dimgray;
+    font-family: sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    margin: 10px;
+}
+
+h3 {
+    color: black ;
+    font-family: Helvetica, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px;
+
+}
+
+div {
+    margin: 10px;
+}
+
+
+/*
+=================
+ARTICLES
+=================
+*/
+
+section {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+}
+
+article h1 {
+    font-family: Arial, sans-serif;
+    font-size: 36px;
+    padding: 0.2em 0;
+}
+
+p {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.2em;
+    padding-bottom: 10px;
+}
+
+

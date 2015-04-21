@@ -1,27 +1,25 @@
 package sessions
 
 import (
-	"net/http"
+	"fmt"
 	"html/template"
+	"net/http"
 
 	"github.com/astaxie/beego/session"
 )
 
 type pageContent struct {
+	Session  string
 	Username string
-	Data1 string
-	Data2 string
-	Data3 string
+	Picture  string
 }
 
 var (
-	globalSessions *session.Manager	//global memory space for the session manager
-	rootTmpl = template.Must(template.ParseFiles("templates/base.go.html", "templates/rootcontent.go.html"))
+	globalSessions *session.Manager //global memory space for the session manager
+	rootTmpl       = template.Must(template.ParseFiles("templates/outer.html", "templates/inner.html"))
 )
 
 func init() {
-	//TODO look at https://github.com/astaxie/beego/blob/master/session/sess_mem_test.go
-	//to see if it is necessary to have this full configuration for this setup
 	globalSessions, _ = session.NewManager("memory", `{"cookieName":"gosessionid",
 														"enableSetCookie,omitempty": true,
 														"gclifetime":180,
@@ -30,7 +28,7 @@ func init() {
 														"sessionIDHashFunc": "sha1",
 														"sessionIDHashKey": "",
 														"cookieLifeTime": 180,
-														"providerConfig": ""}`)	//since we are using memory, we don't need a provider config
+														"providerConfig": ""}`) //since we are using memory, we don't need a provider config
 	go globalSessions.GC()
 
 	//Serve static files/content. ex. css and favicon
@@ -39,45 +37,40 @@ func init() {
 	//Serve the pages
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/createsession", createSessionHandler)
+	http.HandleFunc("/otherpage", otherPageHandler)
 	http.HandleFunc("/destroysession", destroySessionHandler)
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	//open the session
-	sess, _ := globalSessions.SessionStart(w,r)
-//	defer sess.SessionRelease(w) //not implemented in beego?
+	sess, _ := globalSessions.SessionStart(w, r)
 
 	//check if the session is already created
 	var pc pageContent
-	uname := sess.Get("username")
-	if uname != nil {
-		pc.Username = sess.Get("username").(string)
-		pc.Data1 = sess.Get("data1").(string)
-		pc.Data2 = sess.Get("data2").(string)
-		pc.Data3 = sess.Get("data3").(string)
+	sessID := sess.Get("Session")
+	if sessID != nil {
+		pc.Session = sess.Get("Session").(string)
+		pc.Username = sess.Get("Username").(string)
+		pc.Picture = sess.Get("Picture").(string)
 	}
 
-//	log.Infof(c, "Session ID: %v", sess.SessionID())
 	rootTmpl.Execute(w, pc)
+}
+
+func otherPageHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "<h1>Okay, you've had your fun, now move along!</h1>")
+	fmt.Fprint(w, "<a href='/'>Go back</a>")
 }
 
 func createSessionHandler(w http.ResponseWriter, r *http.Request) {
 
-	sess, _ := globalSessions.SessionStart(w,r)
+	sess, _ := globalSessions.SessionStart(w, r)
 
-	//Use the session Id as the user for now
-	sess.Set("username", sess.SessionID())
+	sess.Set("Session", sess.SessionID())
+	sess.Set("Picture", r.FormValue("picture"))
+	sess.Set("Username", r.FormValue("username"))
 
-	//Store the information the user set in the form
-	sess.Set("data1", r.FormValue("data1"))
-	sess.Set("data2", r.FormValue("data2"))
-	sess.Set("data3", r.FormValue("data3"))
-
-	//debug
-//	c := appengine.NewContext(r)
-//	log.Infof(c, "Session ID: %v", sess.SessionID())
-
-	http.Redirect(w,r, "/", 302 )
+	http.Redirect(w, r, "/", 302)
 }
 
 func destroySessionHandler(w http.ResponseWriter, r *http.Request) {
@@ -86,10 +79,10 @@ func destroySessionHandler(w http.ResponseWriter, r *http.Request) {
 	sess, _ := globalSessions.SessionStart(w, r)
 
 	//destroy the session if it actually exists
-	uname := sess.Get("username")
-	if uname != nil {
-		globalSessions.SessionDestroy(w,r)
+	sessID := sess.Get("Session")
+	if sessID != nil {
+		globalSessions.SessionDestroy(w, r)
 	}
 
-	http.Redirect(w,r, "/", 302 )
+	http.Redirect(w, r, "/", 302)
 }
